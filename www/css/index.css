@@ -1,0 +1,49 @@
+
+#map-page, #map-canvas, #map-container { width: 100%; height: 100%; padding: 0; }
+
+#mapcontainer {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    background-color: lightblue;
+}
+
+#map {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+}
+
+#detailcontent {
+    position: relative;
+    width: 96%;
+    height: 96%;
+    left: 2%;
+    top: 2%;
+    overflow: scroll;
+}
+
+.clinic-title {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.clinic-header {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.transparentButton {
+    background-color: transparent !important;
+    border: 0 !important;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+.greenheader {
+    background: mediumseagreen !important;
+}
