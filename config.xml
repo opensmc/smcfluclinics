@@ -38,7 +38,7 @@
         <allow-intent href="itms-apps:*" />
     </platform>
     
+    <gap:plugin name="org.apache.cordova.geolocation" version="0.3.12" />
     <gap:plugin name="com.capgemini.plugins.toast" version="2.0.2" />
-    <gap:plugin name="cordova-plugin-x-toast" source="npm" />
 
 </widget>
