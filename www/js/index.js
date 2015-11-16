@@ -131,7 +131,7 @@ function createMap() {
 }
 
 function geoLocate() {
-    window.plugins.toast.showShortCenter('Getting current location');
+    // window.plugins.toast.showShortCenter('Getting current location');
     navigator.geolocation.getCurrentPosition(onGeoLocateSuccess, onGeoLocateError);   
 }
 
