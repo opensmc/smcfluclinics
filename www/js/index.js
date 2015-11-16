@@ -89,7 +89,7 @@ function buildTimeframeQuery() {
     endDate = moment(endDate).endOf('d')
     var endDateString = moment(endDate).format("YYYY-MM-DDTHH:mm:ss");
     console.log("endDateString = " + endDateString)
-    var queryURL = config.queryURLBase + config.queryURLStartDateTag + ">='" + startDateString + "'%20AND%20" + config.queryURLEndDateTag + "<='" + endDateString + "'";
+    var queryURL = config.queryURLBase + config.queryURLStartDateTag + ">='" + startDateString + "'%20AND%20" + config.queryURLEndDateTag + "<='" + endDateString + "'&$order=" + config.queryURLOrderTag;
     console.log("queryURL = " + queryURL);
 
     fetchNewResults(queryURL);
@@ -175,6 +175,7 @@ function addClinic(value) {
     var endDate = value.end_date;
     var facilityName = value.facility_name;
     var facilityId = value.facility_id;
+    var eligibility = value.eligibility;
 
     // see if an entry already exists with the given facility id
     var existingClinic = null;
@@ -194,6 +195,7 @@ function addClinic(value) {
             city: city,
             latitude: lat,
             longitude: lng,
+            eligibility: eligibility,
             dates: []
         };
         clinicList[facilityId] = newClinic;
@@ -237,9 +239,15 @@ function addMarker(clinic) {
         var mapLink = "http://maps.google.com/maps?q=" + encodeURIComponent(fullAddress);
         htmlContent += "<a href='" + mapLink + "'>View map</a><br/>";
 
+        if (clinic.eligibility != null) {
+            htmlContent += "<br/>";
+            htmlContent += "<span class='clinic-header'>Eligibility</span><br/>";
+            htmlContent += clinic.eligibility + "<br/>";
+        }
+
         htmlContent += "<br/>";
         htmlContent += "<span class='clinic-header'>Clinic Dates and Times</span><br/>";
-        htmlContent += "<table>";
+        htmlContent += "<table border='0' cellspacing='0' cellpadding='0' class='clinic-detail-table'>";
         for (var dateKey in clinic.dates) {
             var datePair = clinic.dates[dateKey];
             var dateString = moment(datePair.beginDate).format('MMMM Do YYYY');
@@ -248,6 +256,7 @@ function addMarker(clinic) {
             htmlContent += "<tr><td style='padding-right:30px;'>" + dateString + "</td><td>" + startTimeString + " - " + endTimeString + "</td></tr>"; 
         }
         htmlContent += "</table>";
+
         $("#detailcontent").html(htmlContent);
 
         $("body").pagecontainer("change", "#detail-page", { });
