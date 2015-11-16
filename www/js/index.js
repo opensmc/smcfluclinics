@@ -256,6 +256,7 @@ function addMarker(clinic) {
             htmlContent += "<tr><td style='padding-right:30px;'>" + dateString + "</td><td>" + startTimeString + " - " + endTimeString + "</td></tr>"; 
         }
         htmlContent += "</table>";
+        htmlContent += "<p>&nbsp;</p>"
 
         $("#detailcontent").html(htmlContent);
 
