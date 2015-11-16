@@ -1,21 +1,15 @@
-
-#map-page, #map-canvas, #map-container { width: 100%; height: 100%; padding: 0; }
-
-#mapcontainer {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    left: 0;
-    top: 0;
-    background-color: lightblue;
+#app-title {
+    font-weight: normal;
 }
 
+#map-page, #map-canvas, #map-container { width: 100%; height: 100%; padding: 0; text-shadow: none;}
+
 #map {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    left: 0;
-    top: 0;
+    position : absolute;
+    top      : 40px;
+    right    : 0;
+    bottom   : 0px;
+    left     : 0;
 }
 
 #detailcontent {
@@ -46,4 +40,12 @@
 
 .greenheader {
     background: mediumseagreen !important;
+}
+
+.abouttext {
+    font-weight: light;
+}
+
+.smalltext {
+    font-size: 11px;
 }

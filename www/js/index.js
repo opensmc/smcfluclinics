@@ -45,6 +45,7 @@ var app = {
     // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function() {
         addTextContent("onDeviceReady");
+        setAppTitle(config.appName);
         createMap();
         geoLocate();
         $("#select-date-range").change(function() {
@@ -54,26 +55,30 @@ var app = {
 
 };
 
+function setAppTitle(title) {
+    $('#app-title').text(title);
+}
+
 function buildTimeframeQuery() {
     var startDateString = '1970-01-01T00:00:00'; 
     var endDate;
     var selectedTimeframeOption = $("#select-date-range option:selected").val();
     console.log(selectedTimeframeOption);
     if (selectedTimeframeOption != 'alltime') {
-        startDateString = moment().format("YYYY-MM-DDT00:00:00");
+        startDateString = moment().format("YYYY-MM-DDTHH:mm:ss");
     }
     console.log("startDateString = " + startDateString);
     if (selectedTimeframeOption == "today") {
         endDate = moment().startOf('day');
     }
     else if (selectedTimeframeOption == "next3days") {
-        endDate = moment().startOf('day').add(3, 'd');
+        endDate = moment().startOf('day').add(3, 'day');
     }
     else if (selectedTimeframeOption == "nextweek") {
-        endDate = moment().startOf('day').add(1, 'w');
+        endDate = moment().startOf('day').add(1, 'week');
     }
     else if (selectedTimeframeOption == "nextmonth") {
-        endDate = moment().startOf('day').add(1, 'm');
+        endDate = moment().startOf('day').add(1, 'month');
     }
     else if (selectedTimeframeOption == "allfuture") {
         endDate = moment('2037-12-31T00:00:00');
@@ -84,7 +89,7 @@ function buildTimeframeQuery() {
     endDate = moment(endDate).endOf('d')
     var endDateString = moment(endDate).format("YYYY-MM-DDTHH:mm:ss");
     console.log("endDateString = " + endDateString)
-    var queryURL = "https://data.smcgov.org/resource/dmz9-a27g.json?$where=begin_date>='" + startDateString + "'%20AND%20end_date<='" + endDateString + "'";
+    var queryURL = config.queryURLBase + config.queryURLStartDateTag + ">='" + startDateString + "'%20AND%20" + config.queryURLEndDateTag + "<='" + endDateString + "'";
     console.log("queryURL = " + queryURL);
 
     fetchNewResults(queryURL);
@@ -92,13 +97,13 @@ function buildTimeframeQuery() {
 }
 
 function createMap() {
-    var longitude = -122.3127163;
-    var latitude = 37.4525427;
+    var longitude = config.mapCenterLongitude;
+    var latitude = config.mapCenterLatitude;
     var latLong = new google.maps.LatLng(latitude, longitude);
 
     var mapOptions = {
         center: latLong,
-        zoom: 9,
+        zoom: config.mapDefaultZoom,
         mapTypeId: google.maps.MapTypeId.ROADMAP
     };
 
@@ -108,7 +113,7 @@ function createMap() {
         addTextContent('map idle.'); 
         newBounds = map.getBounds();
         addTextContent("newBounds: " + newBounds);
-        fetchResults();
+        buildTimeframeQuery();
         google.maps.event.removeListener(idleUpdateHandler);
     } );
 
@@ -137,7 +142,7 @@ function onGeoLocateSuccess(position) {
     var latLong = new google.maps.LatLng(latitude, longitude);
     myLocationMarker.setPosition(latLong);
 
-    map.setZoom(15);
+    map.setZoom(config.mapMyLocationZoom);
     map.panTo(latLong);
 };
 
@@ -149,17 +154,6 @@ function addTextContent(textToAdd) {
     $("#textcontent").append(textToAdd + "<br/>");
 }
 
-function fetchResults() {
-    clearMarkers();
-    var url = "https://data.smcgov.org/resource/dmz9-a27g.json";
-    $.getJSON(url, function(data) {
-        $.each(data, function(index, value) {
-            addClinic(value);
-        });
-        console.log("clinic hashmap: " + JSON.stringify(clinicList));
-
-    });
-}
 function fetchNewResults(url) {
     clearMarkers();
     clinicList = {};
@@ -227,6 +221,7 @@ function addMarker(clinic) {
     var marker = new google.maps.Marker({
         position: markerLatLng,
         map: map,
+        icon: 'img/firstaid.png',
         title: clinic.facilityName
     });    
 
