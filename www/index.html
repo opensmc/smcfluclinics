@@ -38,6 +38,8 @@
     </head>
     <body>
 
+    <!---------- MAIN PAGE ---------->
+
         <div data-role="page" id="map-page" data-url="map-page" data-theme="a">
             <div data-role="header" class="greenheader" data-theme="b">
                 <a href="#nav-panel" class="ui-btn ui-icon-bars ui-btn-icon-notext ui-corner-all ui-nodisc-icon transparentButton" data-theme="b">Menu</a>
@@ -62,6 +64,8 @@
             </div>
         </div> 
 
+    <!---------- DETAIL PAGE ---------->
+
         <div data-role="page" id="detail-page" data-add-back-btn="true" data-theme="a">
             <div data-role="header">
                 <a href="#" data-mini="true" data-rel="back">Back</a>
@@ -73,33 +77,43 @@
             </div>
         </div>
 
+    <!---------- ABOUT/CREDITS PAGE ---------->
+
         <div data-role="page" id="about" data-add-back-btn="true" data-theme="a">
             <div data-role="header">
                 <a href="#" data-mini="true" data-rel="back">Back</a>
                 <h3>About</h3>
             </div>
 
-            <div data-role="content" >    
-                <h3>SMC Flu Clinics</h3>
-                <h4>Version 0.2</h4>
-                <p class="abouttext">
-                Developed by Greg Gladman<br>
-                <a href="mailto:greg@gladman.com">greg@gladman.com</a><br>
-                </p>
-                <p class="abouttext">
-                More information about flu vaccination clinics can be found on the San Mateo County Health System site: <a href="http://smchealth.org/flu">http://smchealth.org/flu</a>
-                </p>
-                <p class="abouttext">
-                Data provided courtesy of the County of San Mateo Open Data Portal (<a href="https://data.smcgov.org">data.smcgov.org</a>)<br>
-                </p>
-                <p class="abouttext">
-                Special thanks to John Ridener and the members of the SMS Civic Tech Meetup.
-                </p>
-                <p class="abouttext smalltext">
-                Map icons courtesy of Maps Icons Collection (<a href="https://mapicons.mapsmarker.com">mapicons.mapsmarker.com</a>).
+            <div data-role="content" >   
+                <div id="about-graphic">   
+                </div> 
+                <div id="about-title">
+                    <span class="title-large">SMC Flu Clinics</span><br/>
+                    <span class="title-medium">Version 0.2</span>
+                </div>
+                <div id="about-content">
+                    <p class="abouttext">
+                    Developed by Greg Gladman<br>
+                    <a href="mailto:greg@gladman.com">greg@gladman.com</a><br>
+                    </p>
+                    <p class="abouttext">
+                    More information about flu vaccination clinics can be found on the San Mateo County Health System site: <a href="http://smchealth.org/flu">http://smchealth.org/flu</a>
+                    </p>
+                    <p class="abouttext">
+                    Data provided courtesy of the County of San Mateo Open Data Portal (<a href="https://data.smcgov.org">data.smcgov.org</a>)<br>
+                    </p>
+                    <p class="abouttext">
+                    Special thanks to John Ridener and the members of the SMS Civic Tech Meetup.
+                    </p>
+                    <p class="abouttext smalltext">
+                    Map icons courtesy of Maps Icons Collection (<a href="https://mapicons.mapsmarker.com">mapicons.mapsmarker.com</a>).
+                    </p>
+                </div>
             </div>
         </div>
 
+    <!---------- INLINE JAVASCRIPT INCLUDES ---------->
 
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="js/config.js"></script>

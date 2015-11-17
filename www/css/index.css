@@ -58,3 +58,30 @@
 .clinic-detail-table {
     border-collapse: collapse;
 }
+
+.title-large {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.title-medium {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+#about-graphic {
+    float: left;
+}
+
+#about-title {
+}
+
+#about-content {
+    clear: both;
+}
+
+#about-graphic img {
+    padding-right: 10px;
+    width: 40px;
+    height: 40px;
+}
