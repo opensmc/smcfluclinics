@@ -1,3 +1,17 @@
+[data-role='page'] {
+    display: none;
+}
+
+#splash, body { background-color: mediumseagreen; }
+
+#splash {
+    display: block;
+    text-align: center;
+    float: center;
+    height: 100%;
+    width: 100%;
+}
+
 #app-title {
     font-weight: normal;
 }
