@@ -44,12 +44,26 @@ var app = {
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function() {
+        console.log("in onDeviceReady")
+        // FIXME HACK: get preferred language working...
+        globalization_preferred_language_cb("aNTIcAPS")
+        navigator.globalization.getLocaleName(
+          function(lang) { 
+            console.log("================================================================ getpreferredlanguage was called back successfully! =================================================================")
+            },
+          function(err) { 
+            console.log("================================================================ getpreferredlanguage error call back was invoked ================================================================") 
+            }
+          )
+//globalization_preferred_language_cb, globalization_error_cb)
         setAppTitle(config.appName);
+
         createMap();
         geoLocate();
         $("#select-date-range").change(function() {
             buildTimeframeQuery();
         })
+
     },
 };
 
@@ -238,16 +252,16 @@ function showClinicDetails(clinic) {
 
     var fullAddress = clinic.streetAddress + " " + clinic.city;
     var mapLink = "http://maps.google.com/maps?q=" + encodeURIComponent(fullAddress);
-    htmlContent += "<a href='" + mapLink + "'>View map</a><br/>";
+    htmlContent += "<a href='" + mapLink + "'>"+l10n_translate("View map")+"</a><br/>";
 
     if (clinic.eligibility != null) {
         htmlContent += "<br/>";
-        htmlContent += "<span class='clinic-header'>Eligibility</span><br/>";
+        htmlContent += "<span class='clinic-header'>"+l10n_translate("Eligibility")+"</span><br/>";
         htmlContent += clinic.eligibility + "<br/>";
     }
 
     htmlContent += "<br/>";
-    htmlContent += "<span class='clinic-header'>Clinic Dates and Times</span><br/>";
+    htmlContent += "<span class='clinic-header'>"+l10n_translate("Clinic Dates and Times")+"</span><br/>";
     htmlContent += "<table border='0' cellspacing='0' cellpadding='0' class='clinic-detail-table'>";
     for (var dateKey in clinic.dates) {
         var datePair = clinic.dates[dateKey];
@@ -268,6 +282,115 @@ function clearMarkers() {
   for (var i = 0; i < markers.length; i++) {
     markers[i].setMap(null);
   }
+}
+
+// ================================================================
+// Localization
+// ================================================================
+
+// Globals
+var language = "English"    // User's language
+var translations = {}       // l10n translations {lang: {english: l10n}}
+
+// Translate the given english text into the given language. Falls
+// back to the global language if lang is not given.
+//
+// Unknown text (or unknown langauges) are returned as an error
+// message wrapped in an <span class=l10n_error> to help highlight
+// missing translations.
+//
+// globals: 
+// * translations
+// * langauge
+function translate_l10n(i18n_text, lang)
+{
+  retval = ""
+  if (arguments.length < 2)
+    lang = language
+  if (lang in translations) {
+    if (i18n_text in translations[lang]) {
+      retval = translations[lang][i18n_text]
+    } else {
+      // tempting to use a <span class="l10n_error"> here to flag the 
+      // text, but some text replacement happens in HTML <option> tags,
+      // which do not allow child elements.
+      retval = "ERROR: '"+lang+"' translation not found for '"+i18n_text+"'"
+    }
+  } else {
+    retval = "ERROR: Language '"+lang+"' not found in translations table"
+  }
+  return retval
+}
+
+// Update all the l10n spans to fill in the l10n text, or an error.
+function translate_spans()
+{
+  $("[i18n_text]").each(function (i, sp) {
+      i18n_text = sp.getAttribute("i18n_text")
+      if (i18n_text == null) {
+        var i18n_text = "unknown"  // flag for span with no text attr
+      }
+      var l10n_text = translate_l10n(i18n_text, language)
+      console.log("translating("+language+") '"+i18n_text+"' --> '"+l10n_text+"'")
+      sp.innerHTML = l10n_text
+    })
+}
+
+// Callback for getting the user's preferred language.
+// Triggers load of global translations and sets gobal of
+// the preferred language, for benefit of other functions.
+// Last, but hardly least, triggers translation of all the l10n spans.
+//
+// Globals: translations,
+function globalization_preferred_language_cb(lang)
+{
+  language = lang
+  var ajax_request = {
+    dataType: "json",
+    url: "js/translations.json",
+    data: {},
+    success: load_translations_success_cb,
+    error: load_translations_error_cb
+    }
+  var o = $.ajax(ajax_request)
+  set_default_language(lang)
+}
+
+function load_translations_success_cb(data, status, xhr)
+{
+  translations = data
+  translate_spans()
+}
+
+function load_translations_error_cb(xhr, status, err)
+{
+  console.log("error loading translations.json")
+  console.log(err)
+  console.log(status)
+}
+
+function globalization_error_cb(error)
+{
+  console.log("in globalization_error_cb")
+  alert("ERROR: Globalization error")
+}
+
+// sets default language and registers handler if it changes
+function set_default_language(lang)
+{
+  console.log("setting default language to "+lang)
+  language = lang
+  $("#select-language").val(lang).change()
+  $("#select-language").on("change", selected_language)
+}
+
+function selected_language(evt) 
+{
+  var selected_language = $("#select-language option:selected").val();
+  console.log("language "+selected_language+" from selection")  
+  language = selected_language
+
+  translate_spans()
 }
 
 app.initialize();
