@@ -326,8 +326,8 @@ function translate_l10n(i18n_text, lang)
 // Update all the l10n spans to fill in the l10n text, or an error.
 function translate_spans()
 {
-  $("[i18n_text]").each(function (i, sp) {
-      i18n_text = sp.getAttribute("i18n_text")
+  $("[data-i18n-text]").each(function (i, sp) {
+      i18n_text = sp.getAttribute("data-i18n-text")
       if (i18n_text == null) {
         var i18n_text = "unknown"  // flag for span with no text attr
       }

@@ -43,26 +43,26 @@
 
         <div data-role="page" id="map-page" data-url="map-page" data-theme="a">
             <div data-role="header" class="greenheader" data-theme="b">
-                <a href="#nav-panel" class="ui-btn ui-icon-bars ui-btn-icon-notext ui-corner-all ui-nodisc-icon transparentButton" data-theme="b"><span i18n_text="Menu"></span></a>
+                <a href="#nav-panel" class="ui-btn ui-icon-bars ui-btn-icon-notext ui-corner-all ui-nodisc-icon transparentButton" data-theme="b"><span data-i18n-text="Menu"></span></a>
                 <h3><span id="app-title">&nbsp;</span></h3>
-                <a href="#about" class="ui-btn ui-icon-info ui-btn-icon-notext ui-corner-all ui-nodisc-icon transparentButton" data-theme="b"><span i18n_text="About"></span></a>
+                <a href="#about" class="ui-btn ui-icon-info ui-btn-icon-notext ui-corner-all ui-nodisc-icon transparentButton" data-theme="b"><span data-i18n-text="About"></span></a>
             </div>
             <div role="main" class="ui-content" id="map-canvas">
                 <div id="map"></div>
             </div>
             <div data-role="panel" data-position="left" data-position-fixed="false" data-display="overlay" id="nav-panel" data-theme="a">
 
-                <h3><span i18n_text="Search dates:"></span></h3>
+                <h3><span data-i18n-text="Search dates:"></span></h3>
                 <select name="select-date-range" id="select-date-range" data-native-menu="false">
-                    <option value="today" i18n_text="Today">a</option>
-                    <option value="next3days" i18n_text="Next 3 days">b</option>
-                    <option selected value="nextweek" i18n_text="Next week">c</option>
-                    <option value="nextmonth" i18n_text="Next month">d</option>
-                    <option value="allfuture" i18n_text="All future">e</option>
-                    <option value="alltime" i18n_text="All time">f</option>
+                    <option value="today" data-i18n-text="Today">a</option>
+                    <option value="next3days" data-i18n-text="Next 3 days">b</option>
+                    <option selected value="nextweek" data-i18n-text="Next week">c</option>
+                    <option value="nextmonth" data-i18n-text="Next month">d</option>
+                    <option value="allfuture" data-i18n-text="All future">e</option>
+                    <option value="alltime" data-i18n-text="All time">f</option>
                 </select>
 
-                <h3><span i18n_text="Language:"></span></h3>
+                <h3><span data-i18n-text="Language:"></span></h3>
                 <select name="select-language" id="select-language" data-native-menu="false">
                     <option value="English">English</option>
                     <option value="Simplified Chinese">简体中文</option>
@@ -77,8 +77,8 @@
 
         <div data-role="page" id="detail-page" data-add-back-btn="true" data-theme="a">
             <div data-role="header">
-                <a href="#" data-mini="true" data-rel="back"><span i18n_text="Back"></span></a>
-                <h3><span i18n_text="Clinic Details"></span></h3>
+                <a href="#" data-mini="true" data-rel="back"><span data-i18n-text="Back"></span></a>
+                <h3><span data-i18n-text="Clinic Details"></span></h3>
             </div>
 
             <div data-role="content" >    
@@ -90,33 +90,33 @@
 
         <div data-role="page" id="about" data-add-back-btn="true" data-theme="a">
             <div data-role="header">
-                <a href="#" data-mini="true" data-rel="back"><span i18n_text="Back"></span></a>
-                <h3><span i18n_text="About"></span></h3>
+                <a href="#" data-mini="true" data-rel="back"><span data-i18n-text="Back"></span></a>
+                <h3><span data-i18n-text="About"></span></h3>
             </div>
 
             <div data-role="content" >   
                 <div id="about-graphic">   
                 </div> 
                 <div id="about-title">
-                    <span class="title-large"><span i18n_text="SMC Flu Clinics"</span></span><br/>
-                    <span class="title-medium"><span i18n_text="Version 0.5"></span></span>
+                    <span class="title-large"><span data-i18n-text="SMC Flu Clinics"</span></span><br/>
+                    <span class="title-medium"><span data-i18n-text="Version 0.5"></span></span>
                 </div>
                 <div id="about-content">
                     <p class="abouttext">
-                    <span i18n_text="Developed by Greg Gladman"</span><br>
+                    <span data-i18n-text="Developed by Greg Gladman"</span><br>
                     <a href="mailto:greg@gladman.com">greg@gladman.com</a><br>
                     </p>
                     <p class="abouttext">
-                    <span i18n_text="More information about flu vaccination clinics can be found on the San Mateo County Health System site:"></span> <a href="http://smchealth.org/flu">http://smchealth.org/flu</a>
+                    <span data-i18n-text="More information about flu vaccination clinics can be found on the San Mateo County Health System site:"></span> <a href="http://smchealth.org/flu">http://smchealth.org/flu</a>
                     </p>
                     <p class="abouttext">
-                    <span i18n_text="Data provided courtesy of the County of San Mateo Open Data Portal"></span> (<a href="https://data.smcgov.org">data.smcgov.org</a>)<br>
+                    <span data-i18n-text="Data provided courtesy of the County of San Mateo Open Data Portal"></span> (<a href="https://data.smcgov.org">data.smcgov.org</a>)<br>
                     </p>
                     <p class="abouttext">
-                    <span i18n_text="Special thanks to John Ridener and the members of the SMS Civic Tech Meetup."></span>
+                    <span data-i18n-text="Special thanks to John Ridener and the members of the SMS Civic Tech Meetup."></span>
                     </p>
                     <p class="abouttext smalltext">
-                    <span i18n_text="Map icons courtesy of Maps Icons Collection"></span> (<a href="https://mapicons.mapsmarker.com">mapicons.mapsmarker.com</a>).
+                    <span data-i18n-text="Map icons courtesy of Maps Icons Collection"></span> (<a href="https://mapicons.mapsmarker.com">mapicons.mapsmarker.com</a>).
                     </p>
                 </div>
             </div>
