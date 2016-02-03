@@ -45,25 +45,25 @@ var app = {
     // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function() {
         console.log("in onDeviceReady")
-        // FIXME HACK: get preferred language working...
-        globalization_preferred_language_cb("aNTIcAPS")
         navigator.globalization.getLocaleName(
           function(lang) { 
             console.log("================================================================ getpreferredlanguage was called back successfully! =================================================================")
+            globalization_preferred_language_cb(lang.value.substring(0,2))
             },
-          function(err) { 
+          function() { 
             console.log("================================================================ getpreferredlanguage error call back was invoked ================================================================") 
+            globalization_error_cb
             }
           )
-//globalization_preferred_language_cb, globalization_error_cb)
+
         setAppTitle(config.appName);
 
         createMap();
         geoLocate();
+
         $("#select-date-range").change(function() {
             buildTimeframeQuery();
         })
-
     },
 };
 
@@ -74,8 +74,9 @@ function setAppTitle(title) {
 function buildTimeframeQuery() {
     var startDateString = '1970-01-01T00:00:00'; 
     var endDate;
+
     var selectedTimeframeOption = $("#select-date-range option:selected").val();
-    console.log(selectedTimeframeOption);
+    console.log("selectedTimeframeOption: "+selectedTimeframeOption);
     if (selectedTimeframeOption != 'alltime') {
         startDateString = moment().format("YYYY-MM-DDTHH:mm:ss");
     }
@@ -252,16 +253,16 @@ function showClinicDetails(clinic) {
 
     var fullAddress = clinic.streetAddress + " " + clinic.city;
     var mapLink = "http://maps.google.com/maps?q=" + encodeURIComponent(fullAddress);
-    htmlContent += "<a href='" + mapLink + "'>"+l10n_translate("View map")+"</a><br/>";
+    htmlContent += "<a href='" + mapLink + "'>"+translate_l10n("View map")+"</a><br/>";
 
     if (clinic.eligibility != null) {
         htmlContent += "<br/>";
-        htmlContent += "<span class='clinic-header'>"+l10n_translate("Eligibility")+"</span><br/>";
+        htmlContent += "<span class='clinic-header'>"+translate_l10n("Eligibility")+"</span><br/>";
         htmlContent += clinic.eligibility + "<br/>";
     }
 
     htmlContent += "<br/>";
-    htmlContent += "<span class='clinic-header'>"+l10n_translate("Clinic Dates and Times")+"</span><br/>";
+    htmlContent += "<span class='clinic-header'>"+translate_l10n("Clinic Dates and Times")+"</span><br/>";
     htmlContent += "<table border='0' cellspacing='0' cellpadding='0' class='clinic-detail-table'>";
     for (var dateKey in clinic.dates) {
         var datePair = clinic.dates[dateKey];
@@ -289,7 +290,7 @@ function clearMarkers() {
 // ================================================================
 
 // Globals
-var language = "English"    // User's language
+var language = null         // "aNTIcAPS"   // User's language
 var translations = {}       // l10n translations {lang: {english: l10n}}
 
 // Translate the given english text into the given language. Falls
@@ -301,7 +302,7 @@ var translations = {}       // l10n translations {lang: {english: l10n}}
 //
 // globals: 
 // * translations
-// * langauge
+// * language
 function translate_l10n(i18n_text, lang)
 {
   retval = ""
@@ -334,7 +335,31 @@ function translate_spans()
       console.log("translating("+language+") '"+i18n_text+"' --> '"+l10n_text+"'")
       sp.innerHTML = l10n_text
     })
+
+
+  // for whatever reason, changes to option text does not take effect until
+  // after the selection changes (???). (You can prove that by uncommenting
+  // the "proveit" section below, and commenting-out "!proveit", then looking
+  // at the menu at initial load.) So call .change() to "change" to force
+  // a change when translation happens.
+  // if(PROVIT) {
+  //   console.log("sanity check: select-date-range options")
+  //   $("#select-date-range option").each(function (i, el) { console.log($(el).text()) })
+  //   $("#select-date-range").append("<option value='believeit'>Believe it?</option>")
+  // } else { // !PROVEIT
+  var curval = $("#select-date-range option:selected").val();
+  $("#select-date-range").val(curval).change() // "change" to the current value to trigger option text refresh (WTF????)
+  // }
+
+
 }
+
+var language_from_code = {
+  'en': 'English',
+  'es': 'Spanish',
+  'zh': 'Simplified Chinese',
+  'eN': 'aNTIcAPS'
+  }
 
 // Callback for getting the user's preferred language.
 // Triggers load of global translations and sets gobal of
@@ -342,9 +367,13 @@ function translate_spans()
 // Last, but hardly least, triggers translation of all the l10n spans.
 //
 // Globals: translations,
-function globalization_preferred_language_cb(lang)
+function globalization_preferred_language_cb(lang_code)
 {
-  language = lang
+  console.log(lang_code)
+  lang = 'unknown'
+  if (lang_code in language_from_code)
+    lang = language_from_code[lang_code]
+
   var ajax_request = {
     dataType: "json",
     url: "js/translations.json",
@@ -354,12 +383,20 @@ function globalization_preferred_language_cb(lang)
     }
   var o = $.ajax(ajax_request)
   set_default_language(lang)
+
+  // if translations are loaded, use them
+  if (language !== null && 'English' in translations) {
+    translate_spans()
+  }
 }
 
 function load_translations_success_cb(data, status, xhr)
 {
   translations = data
-  translate_spans()
+  // if language is set, translate
+  if (language !== null && "English" in translations) {
+    translate_spans()
+  }
 }
 
 function load_translations_error_cb(xhr, status, err)
@@ -369,7 +406,7 @@ function load_translations_error_cb(xhr, status, err)
   console.log(status)
 }
 
-function globalization_error_cb(error)
+function globalization_error_cb()
 {
   console.log("in globalization_error_cb")
   alert("ERROR: Globalization error")
@@ -394,3 +431,4 @@ function selected_language(evt)
 }
 
 app.initialize();
+ 

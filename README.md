@@ -21,8 +21,8 @@ To debug, get the Google Chrome plugin from http://emulate.phonegap.com/.
 Beware the plugin is 1) beta; 2) a potential security hole.
 
 Then run "cordova serve android" and point Chrome to 
-localhost:8000/android/www.  Note you will see many popup dialogs; close 
-those and turn on developer tools, and reload. 
+localhost:8000/android/www/index.html.  Note you will see many 
+popup dialogs; close those and turn on developer tools, and reload. 
 
 If/when you change the code, kill and restart the cordova serve process, and 
 reload the page.
