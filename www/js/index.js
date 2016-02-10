@@ -38,10 +38,6 @@ var app = {
     // 'load', 'deviceready', 'offline', and 'online'.
     bindEvents: function() {
         document.addEventListener('deviceready', app.onDeviceReady, false);
-        $(function(){
-            $("#splash").hide();
-            $.mobile.changePage("#map-page");
-        });
     },
     // deviceready Event Handler
     //
@@ -49,11 +45,12 @@ var app = {
     // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function() {
         setAppTitle(config.appName);
+        $("#splash").hide();
         createMap();
         geoLocate();
         $("#select-date-range").change(function() {
             buildTimeframeQuery();
-        });
+        })
     },
 };
 
