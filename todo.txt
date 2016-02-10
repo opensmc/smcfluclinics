@@ -8,17 +8,3 @@ TODO:
   JSON's invalid from hand-editing.)
   * Perhaps also a tool to scrape the HTML (and javascript?) to
     look for localization strings...
-
-* navigator.globalization.* is not working at all for me: callbacks
-  never getting called, though I can see the globalization.js file
-  is loading and debug into where it calls exec on cordova.  Once
-  that works, will doubtless want to think about some enhanecments
-  to the globalization callback --- it's supposed to take a language
-  object with a .lang property, and language for Spanish might be
-  well be "Español" rather than "Spanish."
-  But until the callback gets invoked...
-
-* Google map has four(+?) pieces of text that are not getting localized:
-  Map, Satellite, Terrain and Labels. Google might well localize those
-  themselves if the phone is in another locale, but it's worth looking
-  at once navigator.localization works.
