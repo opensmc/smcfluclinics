@@ -38,6 +38,10 @@ var app = {
     // 'load', 'deviceready', 'offline', and 'online'.
     bindEvents: function() {
         document.addEventListener('deviceready', app.onDeviceReady, false);
+        $(function(){
+            $("#splash").hide();
+            $.mobile.changePage("#map-page");
+        });
     },
     // deviceready Event Handler
     //
@@ -63,7 +67,7 @@ var app = {
 
         $("#select-date-range").change(function() {
             buildTimeframeQuery();
-        })
+        });
     },
 };
 
