@@ -29,10 +29,8 @@
             * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
                 * Enable inline JS: add 'unsafe-inline' to default-src
         -->
-
-        <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' maps.googleapis.com/; connect-src 'self'; img-src 'self' data: csi.gstatic.com; style-src 'self' 'unsafe-inline';">
-        <!-- see http://www.w3.org/TR/CSP/#delivery-html-meta-element -->
-
+        <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *"> -->
+        <meta http-equiv="Content-Security-Policy" content="default-src *; img-src 'self' data: gap: http://csi.gstatic.com http://maps.gstatic.com http://maps.googleapis.com; style-src * 'unsafe-inline'; script-src 'self' http://maps.googleapis.com 'unsafe-inline' 'unsafe-eval'">
         <meta name="format-detection" content="telephone=no">
 
         <meta name="msapplication-tap-highlight" content="no">
@@ -42,13 +40,12 @@
     </head>
     <body>
 
-    <!---------- SLASH SCREEN -------->
+    <!---------- SPLASH SCREEN -------->
 
-    <div id="splash" data-role="page">
-        <h1>Put Title Here</h1>
-        <h2>And maybe a Subtitle</h2>
-        <img src="css/jquery-mobile/images/ajax-loader.gif"/>
-        <p>(and maybe a real loader)</p>
+    <div id="splash">
+        <div id="splash_content">            
+            <!-- <img width-"25vw;" height="50vw" src="img/splash.png"/> -->
+        </div>
     </div>
 
     <!---------- MAIN PAGE ---------->
@@ -81,7 +78,6 @@
                     <option selected value="Spanish">Español</option>
                     <option value="aNTIcAPS">aNTIcAPS (for testing)</option>
                 </select>
-
             </div>
         </div> 
 

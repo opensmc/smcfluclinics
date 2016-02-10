@@ -14,6 +14,20 @@
     width: 100%;
 }
 
+.splash_large {
+    font-size: 6vh;
+}
+
+#splash_content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 25%;
+    height: 25%;
+    margin-top: -25vh;
+    margin-left: -25vh;
+}
+
 #app-title {
     font-weight: normal;
 }
