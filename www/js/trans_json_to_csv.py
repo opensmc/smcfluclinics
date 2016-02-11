@@ -8,12 +8,11 @@
 # by side. Using a single file, vs file-per-language,
 # should make it easier to spot gaps between languages.
 #
-# Note that Excel will need to be told the file is in UTF-8.
+# Note that Excel will need to be told the CSV file is in UTF-8.
 # See instructions at 
 #   https://www.itg.ias.edu/content/how-import-csv-file-uses-utf-8-character-encoding-0
 # 
-# There will also be a tool for converting from the CSV
-# file back into JSON.
+# There is another tool for converting from CSV back into JSON.
 #
 # By using both tools, round-tripping is supported.
 
@@ -46,7 +45,8 @@ def main():
         writer = csv.writer(csv_fp)
         writer.writerow(["key"] + languages)
         for text in text_items:
-            writer.writerow([text] + [translations[lang].get(text, "") for lang in languages])
+            row = [text] + [translations[lang].get(text, "") for lang in languages]
+            writer.writerow(row)
 
 
 if __name__ == "__main__":
