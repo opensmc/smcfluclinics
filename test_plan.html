@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+broken { color: red }
+</style>
+</head>
+<body>
+<h1>Testing the OpenSMC Flu Clinic App
+</h1>
+<p>Requirements:
+</p>
+<ol>
+<li>Android phone or iOS phone</li>
+<li>Working Cordova build environment</li>
+</ol>
+
+<h2>Basic Tests
+</h2>
+
+<ol>
+  <li>Open App, confirm map centered on San Mateo County appears.</li>
+  <li>Confirm there's a menu bar in green across the top, with icon for
+      menu (three stacked bars) on the left and information (circled i)
+      on the right.</li>
+  <li>Scroll up agressively at the very bottom of the screen, trying to
+      grab the bottom-most pixel. Also scroll agressively at the the top-most
+      pixel of the map and bottom of the menu. Confirm the menu does not
+      "scroll up" off the web page.</li> 
+  <li>Open the menu by clicking the three stacked bars.
+    <ol>
+    <li>Confirm there's a picklist with a range of dates.</li>
+    <li>Confirm there's a picklist of languages (temporarily) for testing.</li>
+    </ol>
+    </li>
+  <li>Use the menu's picklist of dates to pick "all time" to have some
+      valid clinic choices.</li>
+  <li>Flick the menu to the left and confirm it closes.</li>
+  <li>Confirm map shows a lot of clinics (small white icons with red crosses).</li>
+  <li>Click on a clinic icon to see the clinic details
+    <ol>
+    <li>Confirm details appear.</li>
+    <li>Confirm the clinic date(s) fit into the chosen date range.</li>
+    <li>Note the clinic's address for subsequent steps.</li>
+    </ol></li>
+  <li>Click on the "view on map" link to confim it opens Google Maps 
+      (or other preferred application), for the clinic address from above.</li>
+  <li>Close Google Maps (or other application) and return to app. Confirm
+      the clinic details page (re)appears with the same content as before.</li>
+  <li>Go back to the map. Confirm you see the clinic(s).</li>
+  <li>Zoom into the clinic selected earlier and verify the location on the map
+      matches (or is at least plausibly close to) the street address of the clinic.</li>
+  </li>
+</ol>
+
+<h2>Translation Tests
+</h2>
+
+<p>Note: many tests can be done with a pre-release app that has a
+   language-picking menu. But at least a final round of testing needs
+   to be done by changing the settings menu for the phone as a whole
+   to put the whole phone in another language. That's required to
+   confirm the app starts in the right language, and to confirm that
+   the Google maps code has the right language.
+</p>
+
+<p>Missing translations will appear with messages like 
+   "ERROR: 'Spanish' translation not found for <i>thing</i>"</tt>.
+   Look for those.
+</p>
+<ol>
+<li>For each language (English, Chinese, Spanish):
+  <ol>
+  <li>Open menu, and confirm all menu title are in selected language.</li>
+  <li>Open each picklist, and confirm each picklist entry is in the native
+      language (except language names themselves, if the pick-a-language
+      choice is in the menu).</li>
+  <li>Open a clinic. Confirm all the text is in the selected language.</li>
+  <li>Open the information page. Confirm all the text is in the selected language.</li>
+  <li>Look at the map itself. Google provides menus for maps vs satellite, with
+      checkboxes for Terrain and Labels, respectively. If the language was picked
+      from the phone's settings, these lables should be in the selected language.
+      (If the language was set in the app, the Google map text will remain in the
+      phone's language.)</li>
+  </ol>
+  </li>
+</ol>
+
+</body>
+</html>
