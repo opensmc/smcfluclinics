@@ -253,16 +253,16 @@ function showClinicDetails(clinic) {
 
     var fullAddress = clinic.streetAddress + " " + clinic.city;
     var mapLink = "http://maps.google.com/maps?q=" + encodeURIComponent(fullAddress);
-    htmlContent += "<a href='" + mapLink + "'>"+translate_l10n("View map")+"</a><br/>";
+    htmlContent += "<a href='" + mapLink + "'>"+translate_l10n("button_view_map")+"</a><br/>";
 
     if (clinic.eligibility != null) {
         htmlContent += "<br/>";
-        htmlContent += "<span class='clinic-header'>"+translate_l10n("Eligibility")+"</span><br/>";
+        htmlContent += "<span class='clinic-header'>"+translate_l10n("eligibility")+"</span><br/>";
         htmlContent += clinic.eligibility + "<br/>";
     }
 
     htmlContent += "<br/>";
-    htmlContent += "<span class='clinic-header'>"+translate_l10n("Clinic Dates and Times")+"</span><br/>";
+    htmlContent += "<span class='clinic-header'>"+translate_l10n("clinic_dates")+"</span><br/>";
     htmlContent += "<table border='0' cellspacing='0' cellpadding='0' class='clinic-detail-table'>";
     for (var dateKey in clinic.dates) {
         var datePair = clinic.dates[dateKey];
