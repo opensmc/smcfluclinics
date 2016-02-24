@@ -47,11 +47,9 @@ var app = {
         console.log("in onDeviceReady")
         navigator.globalization.getLocaleName(
           function(lang) { 
-            console.log("================================================================ getpreferredlanguage was called back successfully! =================================================================")
             globalization_preferred_language_cb(lang.value.substring(0,2))
             },
           function() { 
-            console.log("================================================================ getpreferredlanguage error call back was invoked ================================================================") 
             globalization_error_cb
             }
           )
@@ -290,8 +288,8 @@ function clearMarkers() {
 // ================================================================
 
 // Globals
-var language = null         // "aNTIcAPS"   // User's language
-var translations = {}       // l10n translations {lang: {english: l10n}}
+var language = null
+var translations = {}       // l10n translations {lang: {key: l10n}}
 
 // Translate the given english text into the given language. Falls
 // back to the global language if lang is not given.
@@ -312,9 +310,9 @@ function translate_l10n(i18n_text, lang)
     if (i18n_text in translations[lang]) {
       retval = translations[lang][i18n_text]
     } else {
-      // tempting to use a <span class="l10n_error"> here to flag the 
+      // It's tempting to use a <span class="l10n_error"> here to flag the 
       // text, but some text replacement happens in HTML <option> tags,
-      // which do not allow child elements.
+      // which do not allow child elements like <span>.
       retval = "ERROR: '"+lang+"' translation not found for '"+i18n_text+"'"
     }
   } else {
@@ -358,7 +356,6 @@ var language_from_code = {
   'en': 'English',
   'es': 'Spanish',
   'zh': 'Simplified Chinese',
-  'eN': 'aNTIcAPS'
   }
 
 // Callback for getting the user's preferred language.
