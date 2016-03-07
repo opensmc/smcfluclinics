@@ -21,7 +21,8 @@
     "pick_date_3days": "Next 3 days",
     "pick_lang_title": "Language:",
     "clinic_title": "Clinic Details",
-    "pick_date_future": "All future"
+    "pick_date_future": "All future",
+    "phone_number": "Phone number"
   },
   "Simplified Chinese": {
     "credits_thanks": "特别感谢John Ridener和SMS Civic Tech Meetup的成员。",
@@ -45,7 +46,8 @@
     "pick_date_3days": "未来三天",
     "pick_lang_title": "语言",
     "clinic_title": "门诊的详细情况",
-    "pick_date_future": "所有未来"
+    "pick_date_future": "所有未来",
+    "phone_number": "Phone number"
   },
   "Spanish": {
     "credits_thanks": "Un agradecimiento especial a John Ridener y los miembros de la SMS Civic Tech Meetup.",
@@ -69,6 +71,7 @@
     "pick_date_3days": "Próximos tres días",
     "pick_lang_title": "idioma",
     "clinic_title": "Clínica Detalles",
-    "pick_date_future": "Todo futuro"
+    "pick_date_future": "Todo futuro",
+    "phone_number": "Telefono"
   }
 }

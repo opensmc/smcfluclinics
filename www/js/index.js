@@ -45,11 +45,14 @@ var app = {
     // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function() {
         console.log("in onDeviceReady")
+        console.log("getting locale name...");
         navigator.globalization.getLocaleName(
           function(lang) { 
+            console.log("detected lang = " + lang);
             globalization_preferred_language_cb(lang.value.substring(0,2))
             },
-          function() { 
+          function() {
+            console.log("couldn't get locale.") 
             globalization_error_cb
             }
           )
@@ -180,6 +183,11 @@ function addClinic(value) {
     var facilityName = value.facility_name;
     var facilityId = value.facility_id;
     var eligibility = value.eligibility;
+    var phoneNumber = null;
+    if (value.phone_number != null)
+    {
+      var phoneNumber = value.phone_number.phone_number;
+    }
 
     // see if an entry already exists with the given facility id
     var existingClinic = null;
@@ -201,6 +209,7 @@ function addClinic(value) {
             latitude: lat,
             longitude: lng,
             eligibility: eligibility,
+            phoneNumber: phoneNumber,
             dates: []
         };
         clinicList[facilityId] = newClinic;
@@ -252,6 +261,12 @@ function showClinicDetails(clinic) {
     var fullAddress = clinic.streetAddress + " " + clinic.city;
     var mapLink = "http://maps.google.com/maps?q=" + encodeURIComponent(fullAddress);
     htmlContent += "<a href='" + mapLink + "'>"+translate_l10n("button_view_map")+"</a><br/>";
+
+    if (clinic.phoneNumber != null) {
+        htmlContent += "<br/>";
+        htmlContent += "<span class='clinic-header'>"+translate_l10n("phone_number")+"</span><br/>";
+        htmlContent += "<a href='tel:" + clinic.phoneNumber + "'>" + clinic.phoneNumber + "</a><br/>";
+    }
 
     if (clinic.eligibility != null) {
         htmlContent += "<br/>";
@@ -366,10 +381,10 @@ var language_from_code = {
 // Globals: translations,
 function globalization_preferred_language_cb(lang_code)
 {
-  console.log(lang_code)
-  lang = 'unknown'
+  console.log("lang_code = " + lang_code);
+  lang = 'English';
   if (lang_code in language_from_code)
-    lang = language_from_code[lang_code]
+    lang = language_from_code[lang_code];
 
   var ajax_request = {
     dataType: "json",
