@@ -22,10 +22,11 @@ import os
 import shutil
 
 
-def main():
+def main(csv_filename='translations.csv',
+         json_filename='translations.json'):
     # Get CSV translations
     translations = {}
-    with open("translations.csv", "r", encoding="utf-8") as csv_fp:
+    with open(csv_filename, "r", encoding="utf-8") as csv_fp:
         reader = csv.reader(csv_fp)
         header = next(reader)
         assert(header[0] == "key")
@@ -36,12 +37,12 @@ def main():
                 translations[lang][row[0]] = row[i+1]
 
     # save prior file
-    if os.path.exists("translations.json"):
+    if os.path.exists(json_filename):
         timestamped_json = time.strftime("translations_%Y%m%d_%H%M%S.json")
-        shutil.move("translations.json", timestamped_json)
+        shutil.move(json_filename, timestamped_json)
 
     # save as JSON
-    with open("translations.json", "w", encoding="utf-8") as json_fp:
+    with open(json_filename, "w", encoding="utf-8") as json_fp:
         json.dump(translations, json_fp, ensure_ascii=False, indent=2)
 
 

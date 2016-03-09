@@ -22,10 +22,11 @@ import time
 import os
 import shutil
 
-def main():
+def main(json_filename='translations.json',
+         csv_filename='translations.csv'):
     # Get the JSON translations.
     translations = None
-    with open("translations.json", "r", encoding="utf-8") as json_fp:
+    with open(json_filename, "r", encoding="utf-8") as json_fp:
         translations = json.load(json_fp)
 
     # Make list of languages, and assemble union of all the keys.
@@ -36,12 +37,12 @@ def main():
     text_items = sorted(text_items)
 
     # save the prior file
-    if os.path.exists("translations.csv"):
+    if os.path.exists(csv_filename):
         timestamped_csv = time.strftime("translations_%Y%m%d_%H%M%S.csv")
-        shutil.move("translations.csv", timestamped_csv)
+        shutil.move(csv_filename, timestamped_csv)
 
     # write the CSV
-    with open("translations.csv", "w", encoding="utf-8", newline="") as csv_fp:
+    with open(csv_filename, "w", encoding="utf-8", newline="") as csv_fp:
         writer = csv.writer(csv_fp)
         writer.writerow(["key"] + languages)
         for text in text_items:
