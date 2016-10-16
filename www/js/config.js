@@ -1,6 +1,6 @@
 var config = {
-	appName: 'SMC Flu Clinics',
-	queryURLBase: 'https://data.smcgov.org/resource/dmz9-a27g.json?$where=',
+	appName: 'Flu Clinics',
+	queryURLBase: 'https://data.smcgov.org/resource/4x4f-ayh8.json?$where=',
 	queryURLStartDateTag: 'begin_date',
 	queryURLEndDateTag: 'end_date',
 	queryURLOrderTag: 'begin_date',

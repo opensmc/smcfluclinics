@@ -37,6 +37,66 @@ var app = {
     // Bind any events that are required on startup. Common events are:
     // 'load', 'deviceready', 'offline', and 'online'.
     bindEvents: function() {
+        document.addEventListener('deviceready', this.onDeviceReady, false);
+    },
+    // deviceready Event Handler
+    //
+    // The scope of 'this' is the event. In order to call the 'receivedEvent'
+    // function, we must explicitly call 'app.receivedEvent(...);'
+    onDeviceReady: function() {
+        app.receivedEvent('deviceready');
+    },
+    // Update DOM on a Received Event
+    receivedEvent: function(id) {
+        
+        /* var parentElement = document.getElementById(id);
+        var listeningElement = parentElement.querySelector('.listening');
+        var receivedElement = parentElement.querySelector('.received');
+
+        listeningElement.setAttribute('style', 'display:none;');
+        receivedElement.setAttribute('style', 'display:block;');
+        */
+        console.log('Received Event: ' + id);
+
+        console.log("in onDeviceReady")
+        console.log("getting locale name...");
+        globalization_preferred_language_cb("en");
+/*
+        navigator.globalization.getLocaleName(
+          function(lang) { 
+            console.log("detected lang = " + lang);
+            globalization_preferred_language_cb(lang.value.substring(0,2))
+            },
+          function() {
+            console.log("couldn't get locale.") 
+            globalization_error_cb
+            }
+          )
+*/
+        setAppTitle(config.appName);
+//        $("#splash").hide();
+        createMap();
+        geoLocate();
+
+        $("#select-date-range").change(function() {
+            buildTimeframeQuery();
+        })
+    }
+};
+
+/*
+var app = {
+    // Application Constructor
+    initialize: function() {
+        console.log("initialize");
+        this.bindEvents();
+    },
+    // Bind Event Listeners
+    //
+    // Bind any events that are required on startup. Common events are:
+    // 'load', 'deviceready', 'offline', and 'online'.
+    bindEvents: function() {
+        console.log("bindEvents");
         document.addEventListener('deviceready', app.onDeviceReady, false);
     },
     // deviceready Event Handler
@@ -67,6 +127,7 @@ var app = {
         })
     },
 };
+*/
 
 function setAppTitle(title) {
     $('#app-title').text(title);
@@ -174,8 +235,9 @@ function fetchNewResults(url) {
 }
 
 function addClinic(value) {
-    var lat = value.location_1.latitude;
-    var lng = value.location_1.longitude;
+    console.log(JSON.stringify(value, null, 4));
+    var lat = value.location_1.coordinates[1];
+    var lng = value.location_1.coordinates[0];
     var street = value.street1;
     var city = value.city;
     var beginDate = value.begin_date;
@@ -369,8 +431,7 @@ function translate_spans()
 
 var language_from_code = {
   'en': 'English',
-  'es': 'Spanish',
-  'zh': 'Simplified Chinese',
+  'es': 'Spanish'
   }
 
 // Callback for getting the user's preferred language.
@@ -442,5 +503,5 @@ function selected_language(evt)
   translate_spans()
 }
 
-app.initialize();
+// app.initialize();
  
