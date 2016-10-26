@@ -27,53 +27,27 @@ var idleUpdateHandler;
 var searchTimeframe;
 
 var app = {
-    // Application Constructor
+
     initialize: function() {
         this.bindEvents();
     },
-    // Bind Event Listeners
-    //
-    // Bind any events that are required on startup. Common events are:
-    // 'load', 'deviceready', 'offline', and 'online'.
+
     bindEvents: function() {
         document.addEventListener('deviceready', this.onDeviceReady, false);
     },
-    // deviceready Event Handler
-    //
-    // The scope of 'this' is the event. In order to call the 'receivedEvent'
-    // function, we must explicitly call 'app.receivedEvent(...);'
+
     onDeviceReady: function() {
         app.receivedEvent('deviceready');
     },
-    // Update DOM on a Received Event
+
     receivedEvent: function(id) {
-
-        /* var parentElement = document.getElementById(id);
-        var listeningElement = parentElement.querySelector('.listening');
-        var receivedElement = parentElement.querySelector('.received');
-
-        listeningElement.setAttribute('style', 'display:none;');
-        receivedElement.setAttribute('style', 'display:block;');
-        */
         console.log('Received Event: ' + id);
 
         console.log("in onDeviceReady")
         console.log("getting locale name...");
         globalization_preferred_language_cb("en");
-        /*
-                navigator.globalization.getLocaleName(
-                  function(lang) { 
-                    console.log("detected lang = " + lang);
-                    globalization_preferred_language_cb(lang.value.substring(0,2))
-                    },
-                  function() {
-                    console.log("couldn't get locale.") 
-                    globalization_error_cb
-                    }
-                  )
-        */
+
         setAppTitle(config.appName);
-        //        $("#splash").hide();
         createMap();
         geoLocate();
 
@@ -82,51 +56,6 @@ var app = {
         })
     }
 };
-
-/*
-var app = {
-    // Application Constructor
-    initialize: function() {
-        console.log("initialize");
-        this.bindEvents();
-    },
-    // Bind Event Listeners
-    //
-    // Bind any events that are required on startup. Common events are:
-    // 'load', 'deviceready', 'offline', and 'online'.
-    bindEvents: function() {
-        console.log("bindEvents");
-        document.addEventListener('deviceready', app.onDeviceReady, false);
-    },
-    // deviceready Event Handler
-    //
-    // The scope of 'this' is the event. In order to call the 'receivedEvent'
-    // function, we must explicitly call 'app.receivedEvent(...);'
-    onDeviceReady: function() {
-        console.log("in onDeviceReady")
-        console.log("getting locale name...");
-        navigator.globalization.getLocaleName(
-          function(lang) { 
-            console.log("detected lang = " + lang);
-            globalization_preferred_language_cb(lang.value.substring(0,2))
-            },
-          function() {
-            console.log("couldn't get locale.") 
-            globalization_error_cb
-            }
-          )
-
-        setAppTitle(config.appName);
-        $("#splash").hide();
-        createMap();
-        geoLocate();
-
-        $("#select-date-range").change(function() {
-            buildTimeframeQuery();
-        })
-    },
-};
-*/
 
 function setAppTitle(title) {
     $('#app-title').text(title);
@@ -360,6 +289,9 @@ function showClinicDetails(clinic) {
 }
 
 function launchMap(location) {
+    launchnavigator.navigate(encodeURIComponent(location));
+
+    /*
     var platform = device.platform.toLowerCase();
     if (platform == "browser") {
         window.open('http://maps.google.com/maps?q=' + encodeURIComponent(location), '_system');
@@ -384,7 +316,7 @@ function launchMap(location) {
             launchnavigator.navigate(encodeURIComponent(location), { app: app });
         });
     }
-
+    */
 }
 
 function clearMarkers() {

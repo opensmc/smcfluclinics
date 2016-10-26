@@ -7,6 +7,8 @@
     <preference name="DisallowOverscroll" value="true" />
     <preference name="android-minSdkVersion" value="14" />
     <preference name="StatusBarOverlaysWebView" value="false" />
+    <preference name="StatusBarBackgroundColor" value="#000000" />
+    <preference name="StatusBarStyle" value="lightcontent" />
     <preference name="permissions" value="none"/>
     <feature name="http://api.phonegap.com/1.0/geolocation"/>
 <!--
