@@ -16,7 +16,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 var map;
 var markers = [];
 var clinicList = {};
@@ -48,7 +47,7 @@ var app = {
     },
     // Update DOM on a Received Event
     receivedEvent: function(id) {
-        
+
         /* var parentElement = document.getElementById(id);
         var listeningElement = parentElement.querySelector('.listening');
         var receivedElement = parentElement.querySelector('.received');
@@ -61,20 +60,20 @@ var app = {
         console.log("in onDeviceReady")
         console.log("getting locale name...");
         globalization_preferred_language_cb("en");
-/*
-        navigator.globalization.getLocaleName(
-          function(lang) { 
-            console.log("detected lang = " + lang);
-            globalization_preferred_language_cb(lang.value.substring(0,2))
-            },
-          function() {
-            console.log("couldn't get locale.") 
-            globalization_error_cb
-            }
-          )
-*/
+        /*
+                navigator.globalization.getLocaleName(
+                  function(lang) { 
+                    console.log("detected lang = " + lang);
+                    globalization_preferred_language_cb(lang.value.substring(0,2))
+                    },
+                  function() {
+                    console.log("couldn't get locale.") 
+                    globalization_error_cb
+                    }
+                  )
+        */
         setAppTitle(config.appName);
-//        $("#splash").hide();
+        //        $("#splash").hide();
         createMap();
         geoLocate();
 
@@ -134,31 +133,26 @@ function setAppTitle(title) {
 }
 
 function buildTimeframeQuery() {
-    var startDateString = '1970-01-01T00:00:00'; 
+    var startDateString = '1970-01-01T00:00:00';
     var endDate;
 
     var selectedTimeframeOption = $("#select-date-range option:selected").val();
-    console.log("selectedTimeframeOption: "+selectedTimeframeOption);
+    console.log("selectedTimeframeOption: " + selectedTimeframeOption);
     if (selectedTimeframeOption != 'alltime') {
         startDateString = moment().format("YYYY-MM-DDTHH:mm:ss");
     }
     console.log("startDateString = " + startDateString);
     if (selectedTimeframeOption == "today") {
         endDate = moment().startOf('day');
-    }
-    else if (selectedTimeframeOption == "next3days") {
+    } else if (selectedTimeframeOption == "next3days") {
         endDate = moment().startOf('day').add(3, 'day');
-    }
-    else if (selectedTimeframeOption == "nextweek") {
+    } else if (selectedTimeframeOption == "nextweek") {
         endDate = moment().startOf('day').add(1, 'week');
-    }
-    else if (selectedTimeframeOption == "nextmonth") {
+    } else if (selectedTimeframeOption == "nextmonth") {
         endDate = moment().startOf('day').add(1, 'month');
-    }
-    else if (selectedTimeframeOption == "allfuture") {
+    } else if (selectedTimeframeOption == "allfuture") {
         endDate = moment('2037-12-31T00:00:00');
-    }
-    else if (selectedTimeframeOption == "alltime") {
+    } else if (selectedTimeframeOption == "alltime") {
         endDate = moment('2037-12-31T00:00:00');
     }
     endDate = moment(endDate).endOf('day')
@@ -185,29 +179,28 @@ function createMap() {
 
     // we only want to get the map bounds and query for data once the map
     // has been created and is ready for display.
-    idleUpdateHandler = google.maps.event.addListener(map, 'idle', function() { 
+    idleUpdateHandler = google.maps.event.addListener(map, 'idle', function() {
         newBounds = map.getBounds();
         buildTimeframeQuery();
         google.maps.event.removeListener(idleUpdateHandler);
-    } );
+    });
 
     // create the "blue dot" marker to show our position on the map
     myLocationMarker = new google.maps.Marker({
         clickable: false,
         icon: new google.maps.MarkerImage('img/mobileimgs2.png',
-                                                        new google.maps.Size(22,22),
-                                                        new google.maps.Point(0,18),
-                                                        new google.maps.Point(11,11)),
+            new google.maps.Size(22, 22),
+            new google.maps.Point(0, 18),
+            new google.maps.Point(11, 11)),
         shadow: null,
         zIndex: 999,
         map: map
     });
-
 }
 
 function geoLocate() {
     // window.plugins.toast.showShortCenter('Getting current location');
-    navigator.geolocation.getCurrentPosition(onGeoLocateSuccess, onGeoLocateError);   
+    navigator.geolocation.getCurrentPosition(onGeoLocateSuccess, onGeoLocateError);
 }
 
 function onGeoLocateSuccess(position) {
@@ -245,10 +238,10 @@ function addClinic(value) {
     var facilityName = value.facility_name;
     var facilityId = value.facility_id;
     var eligibility = value.eligibility;
+    var cost = value.cost;
     var phoneNumber = null;
-    if (value.phone_number != null)
-    {
-      var phoneNumber = value.phone_number.phone_number;
+    if (value.phone_number != null) {
+        var phoneNumber = value.phone_number.phone_number;
     }
 
     // see if an entry already exists with the given facility id
@@ -271,6 +264,7 @@ function addClinic(value) {
             latitude: lat,
             longitude: lng,
             eligibility: eligibility,
+            cost: cost,
             phoneNumber: phoneNumber,
             dates: []
         };
@@ -304,11 +298,11 @@ function addMarker(clinic) {
         map: map,
         icon: 'img/firstaid.png',
         title: clinic.facilityName
-    });    
+    });
 
     marker.addListener('click', function() {
         showClinicDetails(clinic);
-    });      
+    });
 
     markers.push(marker);
 }
@@ -321,43 +315,82 @@ function showClinicDetails(clinic) {
     htmlContent += clinic.city + "<br/>";
 
     var fullAddress = clinic.streetAddress + " " + clinic.city;
-    var mapLink = "http://maps.google.com/maps?q=" + encodeURIComponent(fullAddress);
-    htmlContent += "<a href='" + mapLink + "'>"+translate_l10n("button_view_map")+"</a><br/>";
+    // var mapLink = "http://maps.google.com/maps?q=" + encodeURIComponent(fullAddress);
+    // htmlContent += "<a href='" + mapLink + "'>"+translate_l10n("button_view_map")+"</a><br/>";
+    htmlContent += "<a id='maplink' href='#' onclick='launchMap(\"" + fullAddress + "\"); return false;'>" + translate_l10n("button_view_map") + "</a><br/>";
 
     if (clinic.phoneNumber != null) {
         htmlContent += "<br/>";
-        htmlContent += "<span class='clinic-header'>"+translate_l10n("phone_number")+"</span><br/>";
+        htmlContent += "<span class='clinic-header'>" + translate_l10n("phone_number") + "</span><br/>";
         htmlContent += "<a href='tel:" + clinic.phoneNumber + "'>" + clinic.phoneNumber + "</a><br/>";
+    }
+
+    if (clinic.cost != null) {
+        htmlContent += "<br/>";
+        htmlContent += "<span class='clinic-header'>" + translate_l10n("cost") + "</span><br/>";
+        if (clinic.cost == "0") {
+            htmlContent += "free<br/>";
+        } else {
+            htmlContent += clinic.cost + "<br/>";
+        }
     }
 
     if (clinic.eligibility != null) {
         htmlContent += "<br/>";
-        htmlContent += "<span class='clinic-header'>"+translate_l10n("eligibility")+"</span><br/>";
+        htmlContent += "<span class='clinic-header'>" + translate_l10n("eligibility") + "</span><br/>";
         htmlContent += clinic.eligibility + "<br/>";
     }
 
     htmlContent += "<br/>";
-    htmlContent += "<span class='clinic-header'>"+translate_l10n("clinic_dates")+"</span><br/>";
+    htmlContent += "<span class='clinic-header'>" + translate_l10n("clinic_dates") + "</span><br/>";
     htmlContent += "<table border='0' cellspacing='0' cellpadding='0' class='clinic-detail-table'>";
     for (var dateKey in clinic.dates) {
         var datePair = clinic.dates[dateKey];
         var dateString = moment(datePair.beginDate).format('MMMM Do YYYY');
         var startTimeString = moment(datePair.beginDate).format('h:mm a');
         var endTimeString = moment(datePair.endDate).format('h:mm a');
-        htmlContent += "<tr><td style='padding-right:30px;'>" + dateString + "</td><td>" + startTimeString + " - " + endTimeString + "</td></tr>"; 
+        htmlContent += "<tr><td style='padding-right:30px;'>" + dateString + "</td><td>" + startTimeString + " - " + endTimeString + "</td></tr>";
     }
     htmlContent += "</table>";
     htmlContent += "<p>&nbsp;</p>"
 
     $("#detailcontent").html(htmlContent);
 
-    $("body").pagecontainer("change", "#detail-page", { });
+    $("body").pagecontainer("change", "#detail-page", {});
+}
+
+function launchMap(location) {
+    var platform = device.platform.toLowerCase();
+    if (platform == "browser") {
+        window.open('http://maps.google.com/maps?q=' + encodeURIComponent(location), '_system');
+    } else if (platform == "android") {
+        launchnavigator.isAppAvailable(launchnavigator.APP.GOOGLE_MAPS, function(isAvailable) {
+            var app;
+            if (isAvailable) {
+                app = launchnavigator.APP.GOOGLE_MAPS;
+            } else {
+                app = launchnavigator.APP.USER_SELECT;
+            }
+            launchnavigator.navigate(encodeURIComponent(location), { app: app });
+        });
+    } else if (platform == "ios") {
+        launchnavigator.isAppAvailable(launchnavigator.APP.APPLE_MAPS, function(isAvailable) {
+            var app;
+            if (isAvailable) {
+                app = launchnavigator.APP.APPLE_MAPS;
+            } else {
+                app = launchnavigator.APP.USER_SELECT;
+            }
+            launchnavigator.navigate(encodeURIComponent(location), { app: app });
+        });
+    }
+
 }
 
 function clearMarkers() {
-  for (var i = 0; i < markers.length; i++) {
-    markers[i].setMap(null);
-  }
+    for (var i = 0; i < markers.length; i++) {
+        markers[i].setMap(null);
+    }
 }
 
 // ================================================================
@@ -366,7 +399,7 @@ function clearMarkers() {
 
 // Globals
 var language = null
-var translations = {}       // l10n translations {lang: {key: l10n}}
+var translations = {} // l10n translations {lang: {key: l10n}}
 
 // Translate the given english text into the given language. Falls
 // back to the global language if lang is not given.
@@ -378,61 +411,59 @@ var translations = {}       // l10n translations {lang: {key: l10n}}
 // globals: 
 // * translations
 // * language
-function translate_l10n(i18n_text, lang)
-{
-  retval = ""
-  if (arguments.length < 2)
-    lang = language
-  if (lang in translations) {
-    if (i18n_text in translations[lang]) {
-      retval = translations[lang][i18n_text]
+function translate_l10n(i18n_text, lang) {
+    retval = ""
+    if (arguments.length < 2)
+        lang = language
+    if (lang in translations) {
+        if (i18n_text in translations[lang]) {
+            retval = translations[lang][i18n_text]
+        } else {
+            // It's tempting to use a <span class="l10n_error"> here to flag the 
+            // text, but some text replacement happens in HTML <option> tags,
+            // which do not allow child elements like <span>.
+            retval = "ERROR: '" + lang + "' translation not found for '" + i18n_text + "'"
+        }
     } else {
-      // It's tempting to use a <span class="l10n_error"> here to flag the 
-      // text, but some text replacement happens in HTML <option> tags,
-      // which do not allow child elements like <span>.
-      retval = "ERROR: '"+lang+"' translation not found for '"+i18n_text+"'"
+        retval = "ERROR: Language '" + lang + "' not found in translations table"
     }
-  } else {
-    retval = "ERROR: Language '"+lang+"' not found in translations table"
-  }
-  return retval
+    return retval
 }
 
 // Update all the l10n spans to fill in the l10n text, or an error.
-function translate_spans()
-{
-  $("[data-i18n-text]").each(function (i, sp) {
-      i18n_text = sp.getAttribute("data-i18n-text")
-      if (i18n_text == null) {
-        var i18n_text = "unknown"  // flag for span with no text attr
-      }
-      var l10n_text = translate_l10n(i18n_text, language)
-      console.log("translating("+language+") '"+i18n_text+"' --> '"+l10n_text+"'")
-      sp.innerHTML = l10n_text
+function translate_spans() {
+    $("[data-i18n-text]").each(function(i, sp) {
+        i18n_text = sp.getAttribute("data-i18n-text")
+        if (i18n_text == null) {
+            var i18n_text = "unknown" // flag for span with no text attr
+        }
+        var l10n_text = translate_l10n(i18n_text, language)
+        console.log("translating(" + language + ") '" + i18n_text + "' --> '" + l10n_text + "'")
+        sp.innerHTML = l10n_text
     })
 
 
-  // for whatever reason, changes to option text does not take effect until
-  // after the selection changes (???). (You can prove that by uncommenting
-  // the "proveit" section below, and commenting-out "!proveit", then looking
-  // at the menu at initial load.) So call .change() to "change" to force
-  // a change when translation happens.
-  // if(PROVIT) {
-  //   console.log("sanity check: select-date-range options")
-  //   $("#select-date-range option").each(function (i, el) { console.log($(el).text()) })
-  //   $("#select-date-range").append("<option value='believeit'>Believe it?</option>")
-  // } else { // !PROVEIT
-  var curval = $("#select-date-range option:selected").val();
-  $("#select-date-range").val(curval).change() // "change" to the current value to trigger option text refresh (WTF????)
-  // }
+    // for whatever reason, changes to option text does not take effect until
+    // after the selection changes (???). (You can prove that by uncommenting
+    // the "proveit" section below, and commenting-out "!proveit", then looking
+    // at the menu at initial load.) So call .change() to "change" to force
+    // a change when translation happens.
+    // if(PROVIT) {
+    //   console.log("sanity check: select-date-range options")
+    //   $("#select-date-range option").each(function (i, el) { console.log($(el).text()) })
+    //   $("#select-date-range").append("<option value='believeit'>Believe it?</option>")
+    // } else { // !PROVEIT
+    var curval = $("#select-date-range option:selected").val();
+    $("#select-date-range").val(curval).change() // "change" to the current value to trigger option text refresh (WTF????)
+        // }
 
 
 }
 
 var language_from_code = {
-  'en': 'English',
-  'es': 'Spanish'
-  }
+    'en': 'English',
+    'es': 'Spanish'
+}
 
 // Callback for getting the user's preferred language.
 // Triggers load of global translations and sets gobal of
@@ -440,68 +471,61 @@ var language_from_code = {
 // Last, but hardly least, triggers translation of all the l10n spans.
 //
 // Globals: translations,
-function globalization_preferred_language_cb(lang_code)
-{
-  console.log("lang_code = " + lang_code);
-  lang = 'English';
-  if (lang_code in language_from_code)
-    lang = language_from_code[lang_code];
+function globalization_preferred_language_cb(lang_code) {
+    console.log("lang_code = " + lang_code);
+    lang = 'English';
+    if (lang_code in language_from_code)
+        lang = language_from_code[lang_code];
 
-  var ajax_request = {
-    dataType: "json",
-    url: "js/translations.json",
-    data: {},
-    success: load_translations_success_cb,
-    error: load_translations_error_cb
+    var ajax_request = {
+        dataType: "json",
+        url: "js/translations.json",
+        data: {},
+        success: load_translations_success_cb,
+        error: load_translations_error_cb
     }
-  var o = $.ajax(ajax_request)
-  set_default_language(lang)
+    var o = $.ajax(ajax_request)
+    set_default_language(lang)
 
-  // if translations are loaded, use them
-  if (language !== null && 'English' in translations) {
-    translate_spans()
-  }
+    // if translations are loaded, use them
+    if (language !== null && 'English' in translations) {
+        translate_spans()
+    }
 }
 
-function load_translations_success_cb(data, status, xhr)
-{
-  translations = data
-  // if language is set, translate
-  if (language !== null && "English" in translations) {
-    translate_spans()
-  }
+function load_translations_success_cb(data, status, xhr) {
+    translations = data
+        // if language is set, translate
+    if (language !== null && "English" in translations) {
+        translate_spans()
+    }
 }
 
-function load_translations_error_cb(xhr, status, err)
-{
-  console.log("error loading translations.json")
-  console.log(err)
-  console.log(status)
+function load_translations_error_cb(xhr, status, err) {
+    console.log("error loading translations.json")
+    console.log(err)
+    console.log(status)
 }
 
-function globalization_error_cb()
-{
-  console.log("in globalization_error_cb")
-  alert("ERROR: Globalization error")
+function globalization_error_cb() {
+    console.log("in globalization_error_cb")
+    alert("ERROR: Globalization error")
 }
 
 // sets default language and registers handler if it changes
-function set_default_language(lang)
-{
-  console.log("setting default language to "+lang)
-  language = lang
-  $("#select-language").val(lang).change()
-  $("#select-language").on("change", selected_language)
+function set_default_language(lang) {
+    console.log("setting default language to " + lang)
+    language = lang
+    $("#select-language").val(lang).change()
+    $("#select-language").on("change", selected_language)
 }
 
-function selected_language(evt) 
-{
-  var selected_language = $("#select-language option:selected").val();
-  console.log("language "+selected_language+" from selection")  
-  language = selected_language
+function selected_language(evt) {
+    var selected_language = $("#select-language option:selected").val();
+    console.log("language " + selected_language + " from selection")
+    language = selected_language
 
-  translate_spans()
+    translate_spans()
 }
 
 // app.initialize();
- 
