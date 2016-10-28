@@ -213,22 +213,16 @@ function showClinicDetails(clinic) {
     htmlContent += clinic.city + "<br/>";
 
     var fullAddress = clinic.streetAddress + " " + clinic.city;
-    // var mapLink = "http://maps.google.com/maps?q=" + encodeURIComponent(fullAddress);
-    // htmlContent += "<a href='" + mapLink + "'>"+translate_l10n("button_view_map")+"</a><br/>";
-
     var url;
     var platform = device.platform.toLowerCase();
-    alert("platform = " + platform);
     if (platform == "ios") {
         url = "maps://?q="+latitude+","+longitude;
         // url = 'http://maps.apple.com/?ll='+latitude+','+longitude;
     } else {
         url = 'http://maps.google.com/maps?q=' + encodeURIComponent(fullAddress);
     }
-    alert("url = " + url);
-
+    
     htmlContent += '<a href="' + url + '">' + translate_l10n("button_view_map") + '</a><br/>';
-    console.log(htmlContent);
 
     if (clinic.phoneNumber != null) {
         htmlContent += "<br/>";
@@ -268,61 +262,6 @@ function showClinicDetails(clinic) {
     $("#detailcontent").html(htmlContent);
 
     $("body").pagecontainer("change", "#detail-page", {});
-}
-
-function launchMap(latitude, longitude, encodedAddress) {
-
-    var url;
-    var platform = device.platform.toLowerCase();
-    alert("platform = " + platform);
-    if (platform == "ios") {
-        url = "maps://?q="+latitude+","+longitude;
-        alert("launching map: " + url);
-        window.location.href = url;
-
-        alert("launching via window.open");
-        window.open(url, '_system');
-
-        url = 'http://maps.apple.com/?ll='+latitude+','+longitude;
-        alert("launching alternate url: " + url);
-        window.location.href = url;
-
-        alert("launching alternate via window.open");
-        window.open(url, '_system');
-
-    } else {
-        url = 'http://maps.google.com/maps?q=' + encodedAddress;
-        window.open(url, '_system');
-    }
-
-    // launchnavigator.navigate(encodeURIComponent(location));
-
-    /*
-    var platform = device.platform.toLowerCase();
-    if (platform == "browser") {
-        window.open('http://maps.google.com/maps?q=' + encodeURIComponent(location), '_system');
-    } else if (platform == "android") {
-        launchnavigator.isAppAvailable(launchnavigator.APP.GOOGLE_MAPS, function(isAvailable) {
-            var app;
-            if (isAvailable) {
-                app = launchnavigator.APP.GOOGLE_MAPS;
-            } else {
-                app = launchnavigator.APP.USER_SELECT;
-            }
-            launchnavigator.navigate(encodeURIComponent(location), { app: app });
-        });
-    } else if (platform == "ios") {
-        launchnavigator.isAppAvailable(launchnavigator.APP.APPLE_MAPS, function(isAvailable) {
-            var app;
-            if (isAvailable) {
-                app = launchnavigator.APP.APPLE_MAPS;
-            } else {
-                app = launchnavigator.APP.USER_SELECT;
-            }
-            launchnavigator.navigate(encodeURIComponent(location), { app: app });
-        });
-    }
-    */
 }
 
 function clearMarkers() {
