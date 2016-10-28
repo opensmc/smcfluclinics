@@ -21,6 +21,7 @@ var markers = [];
 var clinicList = {};
 
 var myLocationMarker;
+var clinicMarker;
 
 var idleUpdateHandler;
 
@@ -49,7 +50,7 @@ var app = {
 
         setAppTitle(config.appName);
         createMap();
-        geoLocate();
+        // geoLocate();
 
         $("#select-date-range").change(function() {
             buildTimeframeQuery();
@@ -96,55 +97,35 @@ function buildTimeframeQuery() {
 function createMap() {
     var longitude = config.mapCenterLongitude;
     var latitude = config.mapCenterLatitude;
-    var latLong = new google.maps.LatLng(latitude, longitude);
 
-    var mapOptions = {
-        center: latLong,
-        zoom: config.mapDefaultZoom,
-        mapTypeId: google.maps.MapTypeId.ROADMAP
-    };
+    map = new L.Map('map');
 
-    map = new google.maps.Map(document.getElementById("map"), mapOptions);
+    var osmUrl = 'http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png';
+    var osmAttrib = '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>';
+    var osm = new L.TileLayer(osmUrl, { attribution: osmAttrib });
 
-    // we only want to get the map bounds and query for data once the map
-    // has been created and is ready for display.
-    idleUpdateHandler = google.maps.event.addListener(map, 'idle', function() {
-        newBounds = map.getBounds();
-        buildTimeframeQuery();
-        google.maps.event.removeListener(idleUpdateHandler);
+    map.setView(new L.LatLng(latitude, longitude), 11);
+    map.addLayer(osm);
+
+    myLocationMarker = L.icon({
+        iconUrl: 'img/bluedot.png',
+        iconSize: [22, 22]
     });
 
-    // create the "blue dot" marker to show our position on the map
-    myLocationMarker = new google.maps.Marker({
-        clickable: false,
-        icon: new google.maps.MarkerImage('img/mobileimgs2.png',
-            new google.maps.Size(22, 22),
-            new google.maps.Point(0, 18),
-            new google.maps.Point(11, 11)),
-        shadow: null,
-        zIndex: 999,
-        map: map
+    clinicMarker = L.icon({
+        iconUrl: 'img/firstaid.png',
+        iconSize: [32, 37],
+        iconAnchor: [16, 37]
     });
+
+    map.on('locationfound', onLocationFound);
+
+    map.locate({setView: true, maxZoom: 16});
 }
 
-function geoLocate() {
-    // window.plugins.toast.showShortCenter('Getting current location');
-    navigator.geolocation.getCurrentPosition(onGeoLocateSuccess, onGeoLocateError);
+function onLocationFound(e) {
+    L.marker(e.latlng, {icon: myLocationMarker}).addTo(map);
 }
-
-function onGeoLocateSuccess(position) {
-    var longitude = position.coords.longitude;
-    var latitude = position.coords.latitude;
-    var latLong = new google.maps.LatLng(latitude, longitude);
-    myLocationMarker.setPosition(latLong);
-
-    map.setZoom(config.mapMyLocationZoom);
-    map.panTo(latLong);
-};
-
-function onGeoLocateError(error) {
-    alert("error! code: " + error.code + "\nmessage: " + error.message);
-};
 
 function fetchNewResults(url) {
     clearMarkers();
@@ -219,21 +200,9 @@ function addClinic(value) {
 }
 
 function addMarker(clinic) {
-
-    var markerLatLng = new google.maps.LatLng(clinic.latitude, clinic.longitude);
-
-    var marker = new google.maps.Marker({
-        position: markerLatLng,
-        map: map,
-        icon: 'img/firstaid.png',
-        title: clinic.facilityName
-    });
-
-    marker.addListener('click', function() {
-        showClinicDetails(clinic);
-    });
-
-    markers.push(marker);
+    var markerLatLng = L.latLng(clinic.latitude, clinic.longitude);
+    var newMarker = L.marker(markerLatLng, {icon: clinicMarker, title: clinic.facilityName}).addTo(map).on('click', function(event) { showClinicDetails(clinic); });
+    markers.push(newMarker);
 }
 
 function showClinicDetails(clinic) {
@@ -246,7 +215,8 @@ function showClinicDetails(clinic) {
     var fullAddress = clinic.streetAddress + " " + clinic.city;
     // var mapLink = "http://maps.google.com/maps?q=" + encodeURIComponent(fullAddress);
     // htmlContent += "<a href='" + mapLink + "'>"+translate_l10n("button_view_map")+"</a><br/>";
-    htmlContent += "<a id='maplink' href='#' onclick='launchMap(\"" + fullAddress + "\"); return false;'>" + translate_l10n("button_view_map") + "</a><br/>";
+    htmlContent += "<a id='maplink' href='#' onclick='launchMap(" + clinic.latitude + "," + clinic.longitude + ", \"" + encodeURIComponent(fullAddress) + "\")'); return false;'>" + translate_l10n("button_view_map") + "</a><br/>";
+    console.log(htmlContent);
 
     if (clinic.phoneNumber != null) {
         htmlContent += "<br/>";
@@ -288,8 +258,21 @@ function showClinicDetails(clinic) {
     $("body").pagecontainer("change", "#detail-page", {});
 }
 
-function launchMap(location) {
-    launchnavigator.navigate(encodeURIComponent(location));
+function launchMap(latitude, longitude, encodedAddress) {
+
+    var url;
+    var platform = device.platform.toLowerCase();
+    if (platform == "ios") {
+        url = 'http://maps.apple.com?sll=' + latitude + ',' + longitude;
+    } else if (platform == "android") {
+        url = 'http://maps.google.com/maps?q=' + encodedAddress;
+    } else {
+        url = 'http://maps.google.com/maps?q=' + encodedAddress;
+    }
+    console.log(url);
+    window.open(url, '_system');
+
+    // launchnavigator.navigate(encodeURIComponent(location));
 
     /*
     var platform = device.platform.toLowerCase();
@@ -321,8 +304,9 @@ function launchMap(location) {
 
 function clearMarkers() {
     for (var i = 0; i < markers.length; i++) {
-        markers[i].setMap(null);
+        map.removeLayer(markers[i]);
     }
+    markers = [];
 }
 
 // ================================================================
