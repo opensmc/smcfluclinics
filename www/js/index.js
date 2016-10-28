@@ -263,14 +263,11 @@ function launchMap(latitude, longitude, encodedAddress) {
     var url;
     var platform = device.platform.toLowerCase();
     if (platform == "ios") {
-        url = 'http://maps.apple.com?sll=' + latitude + ',' + longitude;
-    } else if (platform == "android") {
-        url = 'http://maps.google.com/maps?q=' + encodedAddress;
+        window.location.href = "maps://?q="+latitude+","+longitude;
     } else {
         url = 'http://maps.google.com/maps?q=' + encodedAddress;
+        window.open(url, '_system');
     }
-    console.log(url);
-    window.open(url, '_system');
 
     // launchnavigator.navigate(encodeURIComponent(location));
 
