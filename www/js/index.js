@@ -213,6 +213,7 @@ function showClinicDetails(clinic) {
     htmlContent += clinic.streetAddress + "<br/>";
     htmlContent += clinic.city + "<br/>";
 
+    /*
     var platform = device.platform.toLowerCase();
     if (platform == "ios") {
         mapURL = "maps://?q="+latitude+","+longitude;
@@ -222,7 +223,8 @@ function showClinicDetails(clinic) {
     }
     
     htmlContent += '<a href="' + mapURL + '">' + translate_l10n("button_view_map") + '</a><br/>';
-
+    */
+    
     if (clinic.phoneNumber != null) {
         htmlContent += "<br/>";
         htmlContent += "<span class='clinic-header'>" + translate_l10n("phone_number") + "</span><br/>";
