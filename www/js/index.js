@@ -212,6 +212,7 @@ function showClinicDetails(clinic) {
     htmlContent += clinic.streetAddress + "<br/>";
     htmlContent += clinic.city + "<br/>";
 
+    /*
     var fullAddress = clinic.streetAddress + " " + clinic.city;
     var url;
     var platform = device.platform.toLowerCase();
@@ -258,7 +259,8 @@ function showClinicDetails(clinic) {
     }
     htmlContent += "</table>";
     htmlContent += "<p>&nbsp;</p>"
-
+    */
+    
     $("#detailcontent").html(htmlContent);
 
     $("body").pagecontainer("change", "#detail-page", {});
