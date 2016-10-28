@@ -262,8 +262,22 @@ function launchMap(latitude, longitude, encodedAddress) {
 
     var url;
     var platform = device.platform.toLowerCase();
+    alert("platform = " + platform);
     if (platform == "ios") {
-        window.location.href = "maps://?q="+latitude+","+longitude;
+        url = "maps://?q="+latitude+","+longitude;
+        alert("launching map: " + url);
+        window.location.href = url;
+
+        alert("launching via window.open");
+        window.open(url, '_system');
+
+        url = 'http://maps.apple.com/?ll='+latitude+','+longitude;
+        alert("launching alternate url: " + url);
+        window.location.href = url;
+
+        alert("launching alternate via window.open");
+        window.open(url, '_system');
+
     } else {
         url = 'http://maps.google.com/maps?q=' + encodedAddress;
         window.open(url, '_system');
