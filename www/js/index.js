@@ -213,18 +213,16 @@ function showClinicDetails(clinic) {
     htmlContent += clinic.streetAddress + "<br/>";
     htmlContent += clinic.city + "<br/>";
 
-    /*
     var platform = device.platform.toLowerCase();
     if (platform == "ios") {
-        mapURL = "maps://?q="+latitude+","+longitude;
-        // url = 'http://maps.apple.com/?ll='+latitude+','+longitude;
+        mapURL = "maps://?q="+clinic.latitude+","+clinic.longitude;
     } else {
+        var fullAddress = clinic.streetAddress + " " + clinic.city;
         mapURL = 'http://maps.google.com/maps?q=' + encodeURIComponent(fullAddress);
     }
     
     htmlContent += '<a href="' + mapURL + '">' + translate_l10n("button_view_map") + '</a><br/>';
-    */
-    
+
     if (clinic.phoneNumber != null) {
         htmlContent += "<br/>";
         htmlContent += "<span class='clinic-header'>" + translate_l10n("phone_number") + "</span><br/>";
