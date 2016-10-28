@@ -215,7 +215,19 @@ function showClinicDetails(clinic) {
     var fullAddress = clinic.streetAddress + " " + clinic.city;
     // var mapLink = "http://maps.google.com/maps?q=" + encodeURIComponent(fullAddress);
     // htmlContent += "<a href='" + mapLink + "'>"+translate_l10n("button_view_map")+"</a><br/>";
-    htmlContent += "<a id='maplink' href='#' onclick='launchMap(" + clinic.latitude + "," + clinic.longitude + ", \"" + encodeURIComponent(fullAddress) + "\")'); return false;'>" + translate_l10n("button_view_map") + "</a><br/>";
+
+    var url;
+    var platform = device.platform.toLowerCase();
+    alert("platform = " + platform);
+    if (platform == "ios") {
+        url = "maps://?q="+latitude+","+longitude;
+        // url = 'http://maps.apple.com/?ll='+latitude+','+longitude;
+    } else {
+        url = 'http://maps.google.com/maps?q=' + encodedAddress;
+    }
+    alert("url = " + url);
+
+    htmlContent += "<a href='"+url+"'>" + translate_l10n("button_view_map") + "</a><br/>";
     console.log(htmlContent);
 
     if (clinic.phoneNumber != null) {
