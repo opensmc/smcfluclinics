@@ -223,11 +223,11 @@ function showClinicDetails(clinic) {
         url = "maps://?q="+latitude+","+longitude;
         // url = 'http://maps.apple.com/?ll='+latitude+','+longitude;
     } else {
-        url = 'http://maps.google.com/maps?q=' + encodedAddress;
+        url = 'http://maps.google.com/maps?q=' + encodeURIComponent(fullAddress);
     }
     alert("url = " + url);
 
-    htmlContent += "<a href='"+url+"'>" + translate_l10n("button_view_map") + "</a><br/>";
+    htmlContent += '<a href="' + url + '">' + translate_l10n("button_view_map") + '</a><br/>';
     console.log(htmlContent);
 
     if (clinic.phoneNumber != null) {
