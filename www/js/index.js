@@ -207,23 +207,21 @@ function addMarker(clinic) {
 
 function showClinicDetails(clinic) {
     var htmlContent;
+    var mapURL;
     htmlContent = "<br/>";
     htmlContent += "<span class='clinic-title'>" + clinic.facilityName + "</span><br/>";
     htmlContent += clinic.streetAddress + "<br/>";
     htmlContent += clinic.city + "<br/>";
 
-    /*
-    var fullAddress = clinic.streetAddress + " " + clinic.city;
-    var url;
     var platform = device.platform.toLowerCase();
     if (platform == "ios") {
-        url = "maps://?q="+latitude+","+longitude;
+        mapURL = "maps://?q="+latitude+","+longitude;
         // url = 'http://maps.apple.com/?ll='+latitude+','+longitude;
     } else {
-        url = 'http://maps.google.com/maps?q=' + encodeURIComponent(fullAddress);
+        mapURL = 'http://maps.google.com/maps?q=' + encodeURIComponent(fullAddress);
     }
     
-    htmlContent += '<a href="' + url + '">' + translate_l10n("button_view_map") + '</a><br/>';
+    htmlContent += '<a href="' + mapURL + '">' + translate_l10n("button_view_map") + '</a><br/>';
 
     if (clinic.phoneNumber != null) {
         htmlContent += "<br/>";
@@ -259,8 +257,7 @@ function showClinicDetails(clinic) {
     }
     htmlContent += "</table>";
     htmlContent += "<p>&nbsp;</p>"
-    */
-    
+
     $("#detailcontent").html(htmlContent);
 
     $("body").pagecontainer("change", "#detail-page", {});
