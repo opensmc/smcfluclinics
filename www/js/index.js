@@ -215,13 +215,11 @@ function showClinicDetails(clinic) {
 
     var platform = device.platform.toLowerCase();
     if (platform == "ios") {
-        //XXX mapURL = "maps://?q="+clinic.latitude+","+clinic.longitude;
-        mapURL = "maps://?q=37.485965,-122.212151";
+        mapURL = "http://maps.apple.com/?q="+clinic.latitude+","+clinic.longitude;
     } else {
         var fullAddress = clinic.streetAddress + " " + clinic.city;
         mapURL = 'http://maps.google.com/maps?q=' + encodeURIComponent(fullAddress);
     }
-    
     htmlContent += '<a href="' + mapURL + '">' + translate_l10n("button_view_map") + '</a><br/>';
 
     if (clinic.phoneNumber != null) {
@@ -257,17 +255,7 @@ function showClinicDetails(clinic) {
         htmlContent += "<tr><td style='padding-right:30px;'>" + dateString + "</td><td>" + startTimeString + " - " + endTimeString + "</td></tr>";
     }
     htmlContent += "</table>";
-    htmlContent += "<p>&nbsp;</p>"
 
-    htmlContent += "<p>";
-    htmlContent += "<b>TESTING LINKS</b><br>";
-    htmlContent += "<a href='maps://maps.apple.com/?q=37.485965,-122.212151'>maps://maps.apple.com/?q=37.485965,-122.212151</a><br>";
-    htmlContent += "<a href='maps://?q=37.485965,-122.212151'>maps://?q=37.485965,-122.212151</a><br>";
-    htmlContent += "<a href='http://maps.apple.com/?q=37.485965,-122.212151'>http://maps.apple.com/?q=37.485965,-122.212151</a><br>";
-    htmlContent += "<a href='http://maps.google.com?q=37.485965,-122.212151'>http://maps.google.com?q=37.485965,-122.212151</a><br>";
-    htmlContent += "</p>";
-
-http://maps.google.com?q=
     $("#detailcontent").html(htmlContent);
 
     $("body").pagecontainer("change", "#detail-page", {});
