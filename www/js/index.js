@@ -139,8 +139,8 @@ function fetchNewResults(url) {
 
 function addClinic(value) {
     console.log(JSON.stringify(value, null, 4));
-    var lat = value.location_1.coordinates[1];
-    var lng = value.location_1.coordinates[0];
+    var lat = value.location_1.latitude;
+    var lng = value.location_1.longitude;
     var street = value.street1;
     var city = value.city;
     var beginDate = value.begin_date;
