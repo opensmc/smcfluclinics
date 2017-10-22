@@ -1,9 +1,10 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="org.opensmc.fluclinic" version="1.4" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
+<widget id="org.opensmc.fluclinic" version="1.5" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
     <name>Flu Clinics</name>
     <description>Map of public flu shot clinics offered in San Mateo County</description>
     <author email="info@opensmc.org" href="http://opensmc.org">OpenSMC</author>
     <content src="index.html" />
+    <preference name='phonegap-version' value='cli-6.5.0' />
     <preference name="DisallowOverscroll" value="true" />
     <preference name="android-minSdkVersion" value="14" />
     <preference name="StatusBarOverlaysWebView" value="false" />
