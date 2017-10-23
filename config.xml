@@ -21,7 +21,6 @@
     <plugin name="cordova-plugin-statusbar" source="npm" spec="~2.1.2" />
     <plugin name="cordova-plugin-whitelist" source="npm" spec="~1.2.1" />
     <plugin name="uk.co.workingedge.phonegap.plugin.launchnavigator" source="npm" spec="3" />
-    <plugin name="org.apache.cordova.statusbar" />
     <platform name="android">
         <icon platform="android" qualifier="ldpi" src="res/icons/android/icon-36-ldpi.png" />
         <icon platform="android" qualifier="mdpi" src="res/icons/android/icon-48-mdpi.png" />
